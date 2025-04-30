@@ -14,7 +14,7 @@ O objetivo principal deste repositório é armazenar e documentar o progresso do
 - `Relatório`  
   - `main.pdf`: Arquivo final do artigo gerado a partir do código LaTeX, pronto para leitura.
 
-- `Latex/`  
+- `Latex`  
   - `main.tex`: Arquivo principal em LaTeX que integra todas as seções do artigo.  
   - `1_introduction.tex`: Seção da introdução do artigo, apresentando o problema e seus objetivos.  
   - `2_literature_review.tex`: Seção de revisão de literatura, com as principais referências teóricas e estudos relacionados.  
