@@ -1,0 +1,18 @@
+# Ignorar arquivos auxiliares do LaTeX
+*.aux
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.synctex.gz
+*.toc
+*.bbl
+*.blg
+
+# Ignorar arquivos Zone.Identifier (caso tenham vindo de outro sistema)
+*Zone.Identifier
+
+# Opcional: ignorar PDFs gerados automaticamente
+# *.pdf

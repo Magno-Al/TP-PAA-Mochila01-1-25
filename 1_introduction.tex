@@ -1,0 +1,11 @@
+\section{Introdução}
+
+O problema da mochila 0-1 é um clássico problema de otimização combinatória em que se deve selecionar, a partir de um conjunto finito de itens, aqueles que serão carregados em uma “mochila” com capacidade limitada, de modo a maximizar o valor total transportado. Cada item $i$ possui um peso $w_i$ e um valor $v_i$, e não é permitido fracionar ou repetir itens – cada item é escolhido ou não (daí o “0-1”).
+
+Formalmente, o objetivo é maximizar o valor total $\sum_{i=1}^{n} v_i x_i$ sujeito à restrição de que o peso total $\sum_{i=1}^{n} w_i x_i$ não exceda a capacidade da mochila $W$, com $x_i \in \{0,1\}$ indicando a inclusão do item.
+
+Esse nome vem da metáfora de um viajante que deve otimizar a carga de uma mochila limitada, buscando levar o máximo de valor possível. O problema apresenta grande relevância teórica e prática, sendo estudado há mais de um século e aparecendo em diversas aplicações reais, como corte de materiais, seleção de portfólios e sistemas de criptografia.
+
+A forma de decisão do problema (``existe uma seleção de itens com valor $\geq V$?'') é NP-completa. O objetivo deste trabalho é apresentar uma análise introdutória e revisional do problema da mochila 0-1, incluindo sua formulação, variantes, complexidade e métodos de resolução.
+
+A Seção 2 apresenta o referencial teórico com foco na formulação matemática, complexidade e principais abordagens de resolução.
