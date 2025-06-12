@@ -12,6 +12,7 @@ namespace KPack01_Analyzer
             public long ExecutionTime { get; set; }
             public double PeakMemoryMB { get; set; }
             public int SolutionValue { get; set; }
+            public string ConsoleOutput { get; set; }
         }
 
         private Random randomGenerator = new Random();
@@ -46,9 +47,21 @@ namespace KPack01_Analyzer
             resultsDataGridView.Rows.Clear();
             performanceChart.Series["ExecutionTime"].Points.Clear();
             performanceChart.Series["FittedCurve"].Points.Clear();
+            richTextBox1.Clear();
 
             var xDataPoints = new List<double>();
             var yDataPoints = new List<double>();
+
+            int minValue = (int)minValueNumeric.Value;
+            int maxValue = (int)maxValueNumeric.Value;
+            int minWeight = (int)minWeightNumeric.Value;
+            int maxWeight = (int)maxWeightNumeric.Value;
+
+            if (minValue > maxValue || minWeight > maxWeight)
+            {
+                MessageBox.Show("O valor mínimo não pode ser maior que o valor máximo para os ranges de valor/peso.", "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             int executionCount = (int)executionCountNumeric.Value;
             int currentItems = (int)initialItemsNumeric.Value;
@@ -61,7 +74,7 @@ namespace KPack01_Analyzer
                 string tempInstanceFile = null;
                 try
                 {
-                    tempInstanceFile = GenerateArgumentString(currentCapacity, currentItems);
+                    tempInstanceFile = GenerateArgumentString(currentCapacity, currentItems, minValue, maxValue, minWeight, maxWeight);
 
                     ExecutionResult result = RunProcessAndGetResult(exePath, tempInstanceFile);
 
@@ -74,6 +87,9 @@ namespace KPack01_Analyzer
                         "N/A",
                         result.SolutionValue
                     );
+
+                    richTextBox1.AppendText($"--- Execucao Instancia {i + 1} ---\n");
+                    richTextBox1.AppendText(string.IsNullOrEmpty(result.ConsoleOutput) ? "[No output]\n\n" : result.ConsoleOutput + "\n");
 
                     xDataPoints.Add(currentItems);
                     yDataPoints.Add(result.ExecutionTime);
@@ -132,6 +148,8 @@ namespace KPack01_Analyzer
                 process.WaitForExit();
                 stopwatch.Stop();
 
+                result.ConsoleOutput = output + error;
+
                 result.ExecutionTime = stopwatch.ElapsedMilliseconds;
 
                 try
@@ -153,16 +171,15 @@ namespace KPack01_Analyzer
                 return result;
             }
         }
-
-        private string GenerateArgumentString(int capacity, int itemCount)
+        private string GenerateArgumentString(int capacity, int itemCount, int minValue, int maxValue, int minWeight, int maxWeight)
         {
             var argumentBuilder = new StringBuilder();
             argumentBuilder.Append(capacity).Append(" ").Append(itemCount).Append(" ");
             var itemList = new List<string>();
             for (int i = 0; i < itemCount; i++)
             {
-                int value = randomGenerator.Next(10, 31);
-                int weight = randomGenerator.Next(2, 11);
+                int value = randomGenerator.Next(minValue, maxValue + 1);
+                int weight = randomGenerator.Next(minWeight, maxWeight + 1);
                 itemList.Add($"{value},{weight}");
             }
             argumentBuilder.Append(string.Join(";", itemList));
