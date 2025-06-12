@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "Tl4nZjLHZVI=",
+  "success": true,
+  "projectFilePath": "C:\\Puc\\PAA\\KPack01_Analyzer\\KPack01_Analyzer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ammag\\.nuget\\packages\\mathnet.numerics\\5.0.0\\mathnet.numerics.5.0.0.nupkg.sha512",
+    "C:\\Users\\ammag\\.nuget\\packages\\winforms.datavisualization\\1.10.0\\winforms.datavisualization.1.10.0.nupkg.sha512"
+  ],
+  "logs": []
+}
