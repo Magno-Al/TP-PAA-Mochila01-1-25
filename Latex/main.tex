@@ -6,6 +6,25 @@
 \usepackage[brazil]{babel}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\lstset{
+  language=C++,                           % Define linguagem
+  backgroundcolor=\color{black!5},        % Fundo cinza claro
+  basicstyle=\ttfamily\footnotesize,      % Fonte monoespaçada menor
+  keywordstyle=\color{blue},              % Cor de palavras-chave
+  commentstyle=\color{green!50!black},    % Cor de comentários
+  stringstyle=\color{red},                % Cor de strings
+  numbers=left, numbersep=5pt, numberstyle=\tiny\color{gray},
+  breaklines=true,                        % Quebra de linha automática
+}
+
 
 \sloppy
 
@@ -31,6 +50,10 @@ Este artigo apresenta uma análise introdutória e revisional do problema da moc
 % Seções
 \input{1_introduction}
 \input{2_literature_review}
+\input{3_methodology}
+\input{3.5_complexity}
+\input{4_results}
+\input{5_conclusion}
 
 % Referências
 \bibliographystyle{sbc}

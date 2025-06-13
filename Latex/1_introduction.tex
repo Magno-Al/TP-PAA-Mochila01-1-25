@@ -1,11 +1,51 @@
 \section{Introdução}
 
-O problema da mochila 0-1 é um clássico problema de otimização combinatória em que se deve selecionar, a partir de um conjunto finito de itens, aqueles que serão carregados em uma “mochila” com capacidade limitada, de modo a maximizar o valor total transportado. Cada item $i$ possui um peso $w_i$ e um valor $v_i$, e não é permitido fracionar ou repetir itens – cada item é escolhido ou não (daí o “0-1”).
+O problema da mochila 0-1 é um clássico problema de otimização combinatória em que se deve selecionar, a partir de um conjunto finito de itens,
+aqueles que serão carregados em uma “mochila” com capacidade limitada, de modo a maximizar o valor total transportado.
+Cada item $i$ possui um peso $w_i$ e um valor $v_i$, e não é permitido fracionar ou repetir itens – cada item é escolhido ou não (daí o “0-1”).
 
-Formalmente, o objetivo é maximizar o valor total $\sum_{i=1}^{n} v_i x_i$ sujeito à restrição de que o peso total $\sum_{i=1}^{n} w_i x_i$ não exceda a capacidade da mochila $W$, com $x_i \in \{0,1\}$ indicando a inclusão do item.
+\begin{quote}
+% Tradução livre
+Dado \(n\) itens, onde cada item possui um peso e um lucro associados, e também dado uma mochila com capacidade \(W\) (ou seja, a mochila pode conter no máximo \(W\) de peso), a tarefa é colocar os itens na mochila de modo que a soma dos lucros associados seja a máxima possível. A restrição é que só podemos colocar um item completamente na mochila ou não colocá-lo de forma alguma (não é possível colocar apenas uma parte de um item na mochila).%
+\end{quote}
+Fonte: tradução livre de GeeksforGeeks \cite{geeksForGeeks-knapsack}.
 
-Esse nome vem da metáfora de um viajante que deve otimizar a carga de uma mochila limitada, buscando levar o máximo de valor possível. O problema apresenta grande relevância teórica e prática, sendo estudado há mais de um século e aparecendo em diversas aplicações reais, como corte de materiais, seleção de portfólios e sistemas de criptografia.
+Formalmente, o objetivo é maximizar o valor total $\sum_{i=1}^{n} v_i x_i$ sujeito à restrição de que o peso total $\sum_{i=1}^{n} w_i x_i$ não exceda
+a capacidade da mochila $W$, com $x_i \in \{0,1\}$ indicando a inclusão do item.
 
-A forma de decisão do problema (``existe uma seleção de itens com valor $\geq V$?'') é NP-completa. O objetivo deste trabalho é apresentar uma análise introdutória e revisional do problema da mochila 0-1, incluindo sua formulação, variantes, complexidade e métodos de resolução.
+Ou seja:
+\[\max \sum_{i=1}^{n} v_i x_i   \quad\text{sujeito a}\quad   \sum_{i=1}^{n} w_i x_i \le W,   \quad x_i \in \{0,1\}.\]
 
+Isso é, dado um conjunto finito de $n$ itens, cada um com peso $w_i$ e valor $v_i$, deseja-se escolher um subconjunto de itens de modo que seja maximizado o valor total transportado, respeitando a capacidade da mochila $W$, tendo sempre duas possibilidades, inserir o item na mochila ($x_i=1$) ou não ($x_i=0$).
+
+Portanto temos um problema de decisão (cuja resposta é sim ou não) sendo esse um problema NP-completo. A versão de decisão — “existe um subconjunto com valor total pelo menos $V$?” — é NP-completa \cite{garey1979,karp1972}.
+
+%Explicar o que são problemas NP-completos e como o problema da mochila 0-1 se encaixa nessa categoria.
+
+Problemas da classe NP são não determinísticos em tempo polinomial, problemas NP-Completos como o da mochila 0-1 são
+problemas de decisão cuja solução pode ser verificada em tempo polinomial, mas que não se conhece um algoritmo eficiente para resolvê-los
+em tempo polinomial, além disso, eles são redutíveis entre si, ou seja, se descobrirem uma forma de resolver um NP-completo em tempo polinomial, 
+todos os outros problemas NP-completos também podem ser resolvidos em tempo polinomial.
+
+O problema da mochila 0-1 é um dos problemas mais clássicos e estudados na otimização combinatória, sendo um exemplo canônico de problema NP-completo.
+Seu nome deriva da metáfora de um viajante que deve otimizar a carga de uma mochila limitada, buscando levar o máximo de valor possível.
+O problema apresenta grande relevância teórica e prática, sendo estudado há mais de um século e aparecendo em diversas aplicações reais,
+como corte de materiais, seleção de portfólios e sistemas de criptografia. 
+
+Se originou de estudos de otimização do início do século XX. A formulação combinatória que conhecemos hoje foi amplamente divulgada com o desenvolvimento de métodos de programação dinâmica por Bellman na década de 1950 \cite{nemhauser1988},
+e ganhou grande atenção teórica quando sua forma de decisão foi provada NP-completa por Karp em 1972 \cite{karp1972},
+dando sequência às definições de problemas intratáveis consolidadas em \cite{garey1979}. 
+Desde então, o problema tem sido um estudo de referência em algoritmos exatos,
+ heurísticos e esquemas de aproximação (FPTAS) \cite{ibarra1975,jin2019}.
+
+Casos reais em produção incluem:
+
+\begin{itemize}
+  \item \textbf{Ant Financial (Alibaba)}: desenvolveu um solucionador distribuido capaz de resolver instâncias com 1 bilhão de variáveis e restrições em cerca de uma hora, utilizado diariamente em produção, com impacto significativo em alocação de recursos e marketing (Knapsack solver via Hadoop/Spark/MPI) \cite{alibaba2020}.
+  
+  \item \textbf{Amazon PackOpt}: implementou o projeto PackOpt, criando algoritmos para selecionar caixas ideais que reduziram danos em 24\% e custos logísticos em 5\%, atuando também na diminuição de peso de embalagens em 36\% por envio  \cite{amazon2020}.
+\end{itemize}
+
+O objetivo deste trabalho é apresentar uma análise introdutória e revisional do problema da mochila 0-1,
+incluindo sua formulação, variantes, complexidade e métodos de resolução. 
 A Seção 2 apresenta o referencial teórico com foco na formulação matemática, complexidade e principais abordagens de resolução.

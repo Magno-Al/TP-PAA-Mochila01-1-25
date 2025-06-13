@@ -1,0 +1,41 @@
+\section{Resultados}
+Nesta seção, apresentamos os resultados obtidos com as diferentes abordagens para resolver o problema da mochila 0-1.
+
+
+\subsection*{Comparativo das Abordagens}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{>{\bfseries}p{4cm} p{3.5cm} p{3.5cm} p{3.5cm}}
+\toprule
+Critério & Brute Force (Força Bruta) & Top-Down (Memoização) & Bottom-Up (Programação Dinâmica) \\
+\midrule
+Estratégia & Recursiva pura & Recursiva + cache & Iterativa com tabela \\
+Estrutura usada & Árvore binária de chamadas & Recursão + memoização & Tabela bidimensional \\
+Recorrência & \(T(n) = 2T(n-1) + 1\) & \(T(n, W) = T(n-1, W) + T(n-1, W - wt[n-1]) + 1\) & \(T(n, W) = n \cdot W \cdot c\) \\
+Tempo & \(O(2^n)\) & \(O(n \cdot W)\) & \(O(n \cdot W)\) \\
+Espaço & \(O(n)\) & \(O(n \cdot W) + O(n)\) & \(O(n \cdot W)\), ou \(O(W)\) com otimização \\
+Subproblemas resolvidos & Todos (muitos repetidos) & Cada subproblema apenas uma vez & Todos iterativamente \\
+Facilidade de implementação & Simples, porém ineficiente & Média, exige controle de cache & Mais verbosa, mas robusta \\
+Eficiência prática & Muito baixa & Boa & Excelente \\
+Melhor para & Problemas pequenos ou estudo conceitual & Casos moderados com repetição de subproblemas & Casos reais com grandes entradas \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Resumo dos Resultados}
+
+\begin{itemize}
+    \item A abordagem de \textbf{força bruta} serve bem para fins didáticos, mas é inviável para grandes entradas devido ao crescimento exponencial de chamadas.
+    \item A \textbf{programação dinâmica top-down com memoização} melhora drasticamente a eficiência ao evitar recomputações, mantendo uma estrutura recursiva.
+    \item A \textbf{abordagem bottom-up} é a mais eficiente em aplicações reais, pois evita recursão e permite otimização de espaço.
+\end{itemize}
+
+\subsection*{Recomendação de Uso}
+
+\begin{itemize}
+    \item Use \textbf{força bruta} apenas para instâncias muito pequenas ou fins educacionais.
+    \item Use \textbf{top-down com memoização} para problemas moderados ou quando a estrutura recursiva for preferível.
+    \item Use \textbf{bottom-up} para problemas grandes, onde desempenho e controle de memória são essenciais.
+    \item Use \textbf{heurístico / guloso} Quando a valocidade for prioridade e correr o risco de perda de precisão for aceitável
+\end{itemize}

@@ -1,0 +1,136 @@
+\section{Análise de complexidade e comparação}
+
+A tabela a seguir resume a complexidade de cada abordagem:
+
+\begin{table}[h]
+  \centering
+  \caption{Complexidade das Abordagens}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Abordagem} & \textbf{Complexidade de Tempo} & \textbf{Complexidade de Espaço} \\ \hline
+    Força Bruta                        & \(O(2^n)\)                       & \(O(n)\)                        \\ \hline
+    Programação Dinâmica - Bottom\_Up  & \(O(n \cdot W)\)                 & \(O(n \cdot W)\)                \\ \hline
+    Programação Dinâmica - Top\_Down   & \(O(n \cdot W)\)                 & \(O(n \cdot W)\)                \\ \hline
+  \end{tabular}
+\end{table}
+
+
+
+% Força Bruta ---------------------------------
+\subsection{Brute Force (Força Bruta)}
+\subsection*{Descrição}
+A abordagem de força bruta resolve o problema recursivamente. Para cada item, ela considera duas opções: incluí-lo na mochila (
+se houver capacidade) ou excluí-lo. O resultado é o máximo valor obtido entre essas duas opções.
+
+\subsection*{Recorrência Algorítmica (Tempo)}
+\[
+T(n, W) = 
+\begin{cases}
+1 & \text{se } n = 0 \text{ ou } W = 0 \\
+T(n - 1, W) + 1 & \text{se } wt[n - 1] > W \\
+T(n - 1, W) + T(n - 1, W - wt[n - 1]) + 1 & \text{se } wt[n - 1] \leq W
+\end{cases}
+\]
+
+\subsection*{Complexidade}
+\textbf{Tempo:} \( O(2^N) \) \\
+\textbf{Espaço:} \( O(N) \) (devido à pilha de chamadas recursivas)
+
+
+
+
+% Top Down ---------------------------------
+\subsection{Top-Down Dynamic Programming (com Memoização)}
+\subsection*{Descrição}
+Esta abordagem otimiza a força bruta utilizando memoização para evitar recálculos. Antes de computar um subproblema, 
+verifica-se se o resultado já está armazenado. Se sim, retorna o valor armazenado; caso contrário, calcula e armazena.
+
+\subsection*{Recorrência Algorítmica (Tempo)}
+Embora a estrutura seja igual à da força bruta, a memoização garante que cada subproblema \( (n, W) \) seja computado no máximo uma vez.
+Assim, a complexidade é:
+
+\[T(n, W) = \begin{cases}
+1 & \text{se } n = 0 \text{ ou } W = 0 \\
+1 + T(n - 1, W) & \text{se } wt[n - 1] > W \\
+1 + \text{(valor já memoizado ou computado uma vez)} & \text{caso geral}
+\end{cases}\]
+
+\subsection*{Complexidade}
+\textbf{Tempo:} \( O(N \cdot W) \) \\
+\textbf{Espaço:} \( O(N \cdot W) \) para a tabela de memoização + \( O(N) \) para a pilha de chamadas
+
+
+
+
+% Bottom Up ---------------------------------
+\subsection{Bottom-Up Dynamic Programming}
+\subsection*{Descrição}
+A abordagem bottom-up preenche uma tabela iterativamente, resolvendo os subproblemas menores primeiro. A solução é construída de baixo para cima, começando com 0 itens e 0 capacidade.
+
+\subsection*{Recorrência Algorítmica (Tempo)}
+O preenchimento da tabela envolve dois laços aninhados:
+
+\[T(n, W) = O(n \cdot W)\]
+
+\subsection*{Complexidade}
+\textbf{Tempo:} \( O(N \cdot W) \) \\
+\textbf{Espaço:} \( O(N \cdot W) \). Pode ser otimizado para \( O(W) \) se apenas a linha anterior for necessária.
+
+
+
+
+% Heuristica (Guloso) ---------------------------------
+\section{Algoritmos de Aproximação e Heurísticas para o Problema da Mochila 0/1}
+
+O problema da mochila 0/1 pertence à classe dos problemas NP-completos. Essa classificação implica que, até o presente momento,
+não se conhece um algoritmo que seja capaz de resolvê-lo de forma exata, em tempo polinomial, para todas as possíveis instâncias.
+Consequentemente, à medida que o número de itens cresce, os algoritmos exatos, como a solução recursiva simples ou mesmo a programação dinâmica,
+se tornam computacionalmente inviáveis, especialmente em sistemas com recursos limitados ou em aplicações que exigem respostas rápidas.
+
+Diante dessas limitações, surgem como alternativa os algoritmos de aproximação e heurísticas, que têm por objetivo encontrar soluções suficientemente boas dentro de um tempo de execução consideravelmente reduzido. Tais algoritmos não garantem a obtenção da solução ótima, mas frequentemente produzem resultados aceitáveis com significativa economia de tempo computacional.
+
+Uma das heurísticas mais conhecidas e frequentemente utilizadas para o problema da mochila é a abordagem gulosa (greedy), baseada na razão valor/peso de cada item.
+A estratégia dessa heurística é selecionar prioritariamente os itens que oferecem o maior “retorno por unidade de peso”, o que, intuitivamente,
+tende a maximizar o valor total carregado na mochila.
+
+
+\begin{algorithm}[H]
+  \caption{MochilaGulosa(capacidade, pesos, valores, n)}
+  \begin{algorithmic}[1]
+  \State Para cada item $i$, calcule o benefício: $\text{benefício}_i = \frac{\text{valores}[i]}{\text{pesos}[i]}$
+  \State Ordene os itens em ordem decrescente de benefício
+  \State Inicialize a mochila como vazia e $valor\_total \gets 0$
+  \For{cada item $i$ na lista ordenada}
+      \If{$pesos[i] \leq capacidade\_restante$}
+          \State Adicione o item $i$ à mochila
+          \State $valor\_total \gets valor\_total + valores[i]$
+          \State $capacidade\_restante \gets capacidade\_restante - pesos[i]$
+      \EndIf
+  \EndFor
+  \State \Return $valor\_total$
+  \end{algorithmic}
+\end{algorithm}
+
+O funcionamento do algoritmo guloso pode ser descrito nas seguintes etapas:
+
+\begin{itemize}
+  \item Cálculo da razão valor/peso: Para cada item disponível, é calculada a razão entre seu valor e seu peso, representando a eficiência relativa do item.
+  \item Ordenação dos itens: Os itens são ordenados em ordem decrescente de razão valor/peso.
+  \item Seleção dos itens: Os itens são inseridos na mochila, um a um, na ordem estabelecida, desde que o peso total acumulado não ultrapasse a capacidade máxima permitida (W).
+\end{itemize}
+
+Embora essa estratégia seja eficiente do ponto de vista computacional, apresentando complexidade temporal de O(n log n) devido à etapa de ordenação,
+ela possui limitações estruturais. 
+
+Em particular, o algoritmo guloso não é garantidamente ótimo para a versão 0/1 da mochila, 
+pois nesta não é permitido incluir frações de um item. Assim, decisões locais baseadas na razão valor/peso podem impedir que o algoritmo alcance
+a combinação globalmente ótima de itens. 
+
+Por exemplo, pode haver casos em que deixar de fora um item muito eficiente localmente permite 
+incluir outros dois menos eficientes, mas que juntos fornecem um valor total maior. Essa heurística, no entanto, se mostra bastante eficaz quando 
+aplicada à variante racionária do problema da mochila, na qual é permitido incluir partes dos itens. Nesse caso, o algoritmo guloso fornece 
+uma solução ótima e é amplamente adotado como método principal.
+
+Heurísticas gulosas são ferramentas importantes em contextos onde o tempo de execução 
+é um fator crítico e uma solução próxima da ideal é suficiente, mas é essencial compreender suas limitações para aplicá-las de forma adequada, considerando a
+natureza do problema e os requisitos de qualidade da solução.

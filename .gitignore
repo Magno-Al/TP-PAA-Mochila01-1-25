@@ -16,3 +16,6 @@
 
 # Opcional: ignorar PDFs gerados automaticamente
 # *.pdf
+
+# Ignorar arquivos do Visual Studio Code
+.vscode/

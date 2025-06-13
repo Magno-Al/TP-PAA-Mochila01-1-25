@@ -1,0 +1,104 @@
+\section{Metodologia}
+
+Nesta seção, provaremos que o problema da mochila 0-1 é NP-completo e descrevemos os algoritmos utilizados para resolver o problema da mochila 0-1,
+com foco em três abordagens:
+
+\begin{itemize}
+  \item Força Bruta
+  \item Programação Dinâmica com abordagem Bottom-Up
+  \item Programação Dinâmica com abordagem Top-Down (memoização)
+  \item Algoritmos de Aproximação e Heurísticas
+\end{itemize}
+Para cada abordagem, serão apresentados: 
+
+\begin{itemize}
+  \item Funcionamento geral
+  \item Código
+  \item Complexidade
+
+\end{itemize} 
+Implementações em C/C++ foram utilizadas para validar os resultados.
+
+Diversas abordagens algorítmicas podem ser empregadas para resolver o Problema da Mochila 0/1, cada uma com características distintas em termos de complexidade e metodologia.
+
+
+% PROVANDO NP-COMPLETO ---------------------------------------
+\subsection{Provando que o problema da mochila 0-1 é NP-completo}
+
+Para provar que o problema da mochila 0-1 é NP-completo, podemos achar um algoritmo não determinístico em tempo polinomial e mostrar a redução para outro problema ou fazer um algoritmo verificador em tempo polinomial
+
+Optamos por mostrar a redução do problema da mochila 0-1 para o problema de decisão do Subset Sum, que é um problema NP-completo.
+E mostraremos algoritmos não determinísticos que resolvem o problema da mochila 0-1 em tempo polinomial, mostrando assim que o problema da mochila 0-1 é NP-completo.
+
+\paragraph{1. Intuição principal}
+\begin{itemize}
+  \item No \textsc{Subset Sum}, você tem uma lista de números (por exemplo, \(\{2,3,5,8\}\)) e um alvo \(B\). Pergunta-se: “Consigo escolher alguns números cuja soma dê exatamente \(B\)?”
+  \item No \textsc{Knapsack 0--1} (versão decisão), você tem itens com peso \(w_i\) e valor \(v_i\), uma capacidade \(W\) e um mínimo de valor \(K\). Pergunta-se: “Consigo escolher itens cujo peso total \(\le W\) e valor total \(\ge K\)?”
+  \item Se fizermos \(w_i = v_i = a_i\) e escolhermos \(W = K = B\), as duas perguntas se tornam idênticas.
+\end{itemize}
+
+\paragraph{2. Montagem da instância}
+Dada uma instância de \textsc{Subset Sum}
+\[S = \{a_1,a_2,\dots,a_n\},\quad B\in\mathbb{Z}^+,\]
+construímos a instância de \textsc{Knapsack 0--1}:
+\[\bigl\{(w_i,v_i)\bigr\}_{i=1}^n = \bigl\{(a_i,a_i)\bigr\}_{i=1}^n,\quad W = B,\quad K = B.\]
+Ou seja, cada número vira um item cujo peso e valor valem exatamente esse número, e a capacidade/meta da mochila é o próprio alvo.
+
+\paragraph{3. Verificação com exemplo simples}
+Considere \(S=\{2,3,5,8\}\) e teste \(B=3,7,12\):
+\begin{center}
+\begin{tabular}{c|c|c}
+\textbf{Alvo \(B\)} & \textbf{Subset Sum?} & \textbf{Knapsack?} \\\hline
+3  & Sim, escolhe \(\{3\}\)      & Sim, item \((3,3)\) cabe e atinge valor 3 \\
+7  & Sim, escolhe \(\{2,5\}\)    & Sim, itens \((2,2)+(5,5)\) cabem e somam valor 7 \\
+12 & Não existe soma = 12        & Não há combinação que alcance valor 12 sem exceder peso
+\end{tabular}
+\end{center}
+
+Observe que, em cada caso, a resposta no \textsc{Subset Sum} coincide exatamente com a resposta em \textsc{Knapsack 0--1}. Essa construção é muito simples, executa-se em tempo polinomial e mostra que
+\[\textsc{Subset Sum} \;\le_p\; \textsc{Knapsack 0--1},\]
+o que prova a NP-dificuldade do problema da mochila na sua versão decisão.
+
+
+
+
+
+% FORÇA BRUTA ---------------------------------------
+\subsection{Força Bruta}
+A abordagem de força bruta para o problema da mochila 0-1 consiste em explorar todas as possíveis combinações de inclusão ou exclusão de cada item,
+avaliando recursivamente o valor total obtido em cada configuração. Para cada item, o algoritmo considera duas possibilidades:
+incluí-lo na mochila (caso haja capacidade suficiente) ou descartá-lo.
+Ao final, retorna-se o maior valor possível dentre todas as combinações viáveis. Embora conceitualmente simples, essa abordagem apresenta complexidade exponencial, \(O(2^n)\),
+tornando-se inviável para instâncias com grande número de itens \cite{geeksForGeeks-knapsack}.
+
+Quando dizemos que a complexidade de tempo é $O(2^n)$, estamos nos referindo ao número de operações necessárias para resolver o problema no pior caso, à medida que o número de itens $n$ aumenta.
+
+No contexto do problema da mochila (ou problemas similares), para cada item, existem duas opções: incluí-lo ou não incluí-lo na solução. Isso significa que, para $n$ itens, o número total de combinações possíveis é $2 \times 2 \times \ldots \times 2$ ($n$ vezes), ou seja, $2^n$.
+
+A seguir, apresenta-se uma implementação do algoritmo de Força Bruta em C++ retirada de \cite{geeksForGeeks-knapsack}:
+\lstinputlisting[caption={Força Bruta}]{Algorithms/bruteForce.cc}
+
+
+% BOTTOM UP ---------------------------------------
+\subsection{Programação Dinâmica - Bottom-Up}
+A abordagem Bottom-Up utiliza uma tabela para armazenar os resultados de subproblemas, construindo a solução de forma iterativa.
+O algoritmo preenche uma matriz onde cada célula representa a melhor solução possível para um determinado número de itens e capacidade da mochila.
+A complexidade é \(O(n \cdot W)\), onde \(n\) é o número de itens e \(W\) é a capacidade da mochila.
+
+A seguir, apresenta-se uma implementação do algoritmo Bottom-Up em C++ retirada de \cite{geeksForGeeks-knapsack}:
+\lstinputlisting[caption={Programação Dinâmica - Bottom-Up}]{Algorithms/bottomUp.cc}
+
+
+
+
+% TOP DOWN ---------------------------------------
+\subsection{Programação Dinâmica - Top-Down (Memoização)}
+A abordagem Top-Down utiliza recursão com memoização para evitar o recalculo de subproblemas já resolvidos.
+A função recursiva verifica se a solução para um determinado estado já foi calculada e, se sim, retorna o valor armazenado.
+Caso contrário, calcula a solução considerando a inclusão ou exclusão do item atual. A complexidade é também \(O(n \cdot W)\).
+
+Memoização é uma técnica que armazena os resultados de subproblemas para evitar cálculos repetidos, melhorando a eficiência do algoritmo.
+A tabela de memoização é preenchida conforme os subproblemas são resolvidos, permitindo que o algoritmo retorne rapidamente soluções já conhecidas.
+
+A seguir, apresenta-se uma implementação do algoritmo Top-Down em C++ retirada de \cite{geeksForGeeks-knapsack}:
+\lstinputlisting[caption={Programação Dinâmica - Top-Down (Memoização)}]{Algorithms/topDown.cc}
